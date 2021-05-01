@@ -1,0 +1,76 @@
+# HLint configuration file
+# https://github.com/ndmitchell/hlint
+##########################
+
+
+# Specify additional command line arguments
+#
+# - arguments: [--color, --cpp-simple, -XQuasiQuotes]
+
+# Control which extensions/flags/modules/functions can be used
+#
+# - extensions:
+#   - default: false # all extension are banned by default
+#   - name: [PatternGuards, ViewPatterns] # only these listed extensions can be used
+#   - {name: CPP, within: CrossPlatform} # CPP can only be used in a given module
+#
+# - flags:
+#   - {name: -w, within: []} # -w is allowed nowhere
+#
+# - modules:
+#   - {name: [Data.Set, Data.HashSet], as: Set} # if you import Data.Set qualified, it must be as 'Set'
+#   - {name: Control.Arrow, within: []} # Certain modules are banned entirely
+
+- functions:
+  - {name: unsafePerformIO, within: []} # unsafePerformIO can only appear in no modules
+  - {name: undefined, within: []}
+  - {name: error, within: []}
+  - {name: errorWithoutStackTrace, within: []}
+  - {name: fromJust, within: []}
+  - {name: Prelude.head, within: []}
+  - {name: Prelude.last, within: []}
+  - {name: Prelude.init, within: []}
+  - {name: Prelude.tail, within: []}
+  - {name: Data.List.head, within: []}
+  - {name: Data.List.last, within: []}
+  - {name: Data.List.init, within: []}
+  - {name: Data.List.tail, within: []}
+  - {name: "Prelude.!!", within: []}
+  - {name: "Data.List.!!", within: []}
+
+# Add custom hints for this project
+#
+# Will suggest replacing "wibbleMany [myvar]" with "wibbleOne myvar"
+# - error: {lhs: "wibbleMany [x]", rhs: wibbleOne x}
+
+# Turn on hints that are off by default
+#
+# Ban "module X(module X) where", to require a real export list
+# - warn: {name: Use explicit module export list}
+#
+# Replace a $ b $ c with a . b $ c
+- group: {name: dollar, enabled: true}
+
+# Generalise map to fmap, ++ to <>
+- group:
+    name: generalise
+    enabled: true
+    rules:
+      - warn: {lhs: concat, rhs: Data.Foldable.fold}
+      - warn: {lhs: mconcat, rhs: Data.Foldable.fold}
+      - warn: {lhs: comcatMap, rhs: foldMap}
+      - warn: {lhs: forM, rhs: Data.Traversable.for}
+      - warn: {lhs: forM_, rhs: Data.Foldable.for_}
+      - warn: {lhs: mapM, rhs: traverse}
+      - warn: {lhs: mapM_, rhs: Data.Foldable.traverse_}
+      - warn: {lhs: sequence, rhs: sequenceA}
+      - warn: {lhs: sequence_, rhs: Data.Foldable.sequenceA_}
+
+# Ignore some builtin hints
+# - ignore: {name: Use const, within: SpecialModule} # Only within certain modules
+
+# Define some custom infix operators
+# - fixity: infixr 3 ~^#^~
+
+# To generate a suitable file for HLint do:
+# $ hlint --default > .hlint.yaml

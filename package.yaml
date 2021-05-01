@@ -1,0 +1,62 @@
+name:                data-has-th
+version:             0.1.0.0
+github:              "rinse/data-has-th"
+license:             BSD3
+author:              "rinse"
+maintainer:          "rinse@neko2.net"
+copyright:           "2021 rinse"
+
+extra-source-files:
+- .gitignore
+- .hlint.yaml
+- LICENSE
+- README.md
+- package.yaml
+- stack.yaml
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/rinse/data-has-th#readme>
+
+ghc-options:
+- -Wall
+- -Wcompat
+- -Wincomplete-record-updates
+- -Wincomplete-uni-patterns
+- -Wredundant-constraints
+
+dependencies:
+- base >= 4.7 && < 5
+
+library:
+  source-dirs: src
+
+tests:
+  data-has-th-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - data-has-th
+    - hspec >= 2.7.0
+
+  data-has-th-doctest:
+    main:                Spec.hs
+    source-dirs:         doctest
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - data-has-th
+    - doctest >= 0.16
+    - doctest-discover >= 0.2.0
+    - QuickCheck >= 2.13
